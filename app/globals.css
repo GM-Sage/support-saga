@@ -1,0 +1,151 @@
+/* app/(site)/globals.css */
+
+/* Font Import */
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+/* Theme Variables */
+:root {
+  --color-primary: #c9b037;
+  --color-secondary: #3b3a36;
+  --color-text: #f0f0e8;
+  --color-background: #1a1a1a;
+  --color-accent: #d4af37;
+  --color-success: #7cae3c;
+  --color-error: #8e1c1c;
+}
+
+/* Reset Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+/* Anchor Tag Styles */
+a {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+a:hover {
+  color: var(--color-accent);
+}
+
+/* Dropdown */
+.navbarDropdown {
+  position: relative;
+}
+
+.dropdownContent {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #3c3c3c;
+  border: 1px solid #d4af37;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  padding: 0.5rem 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  list-style: none;
+  transition: opacity 0.3s ease; /* Smooth dropdown animation */
+}
+
+.dropdownLink {
+  color: #f0f0e8;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: bold; /* Highlight dropdown options */
+  white-space: nowrap;
+}
+
+.dropdownLink:hover {
+  background-color: #d4af37;
+  color: #3c3c3c;
+}
+
+/* Footer Styles */
+footer {
+  margin-top: auto;
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  padding: 2rem 1rem; /* More padding for better spacing */
+  text-align: center;
+  border-top: 1px solid var(--color-primary); /* Optional border */
+}
+
+/* Utility Classes */
+.m-0 {
+  margin: 0 !important;
+}
+
+.p-2 {
+  padding: 2rem !important;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.block {
+  display: block;
+}
+
+/* Responsive Image */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: var(--color-background);
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}

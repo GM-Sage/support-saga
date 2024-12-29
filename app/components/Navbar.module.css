@@ -1,0 +1,105 @@
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3c3c3c; /* Background color */
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Brand */
+.navbarBrand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-text);
+}
+
+.navbarBrand a {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.navbarBrand a:hover {
+  color: var(--color-accent);
+}
+
+/* Links */
+.navbarLinks {
+  display: flex;
+  gap: 2rem;
+  list-style: none; /* Removes bullet points */
+  margin: 0;
+  padding: 0;
+}
+
+.navbarLink {
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.navbarLink:hover {
+  color: var(--color-accent);
+}
+
+/* Dropdown */
+.navbarDropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdownContent {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #3c3c3c;
+  border: 1px solid var(--color-accent);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  padding: 0.5rem 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  list-style: none; /* Removes bullet points */
+}
+
+.dropdownLink {
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  white-space: nowrap; /* Prevents text wrapping */
+}
+
+.dropdownLink:hover {
+  background-color: var(--color-accent);
+  color: #3c3c3c; /* Text contrast for hover */
+}
+
+/* Buttons */
+.navbarButtons {
+  display: flex;
+  gap: 1rem;
+}
+
+.navbarButton {
+  background-color: var(--color-accent);
+  color: #3c3c3c;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.navbarButton:hover {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+}
