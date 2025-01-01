@@ -1,22 +1,23 @@
+// app/components/Navbar.tsx
 "use client";
 
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Use Next.js router for redirection
+import { useRouter } from "next/navigation";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import styles from "./Navbar.module.css";
 import { usePathname } from "next/navigation";
 
-export default function Navbar({
-  user,
-}: {
-  user?: { avatarUrl?: string; name?: string };
-}) {
+interface NavbarProps {
+  user: any;
+}
+
+export default function Navbar({ user }: NavbarProps) {
   const [isConsultingDropdownOpen, setIsConsultingDropdownOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(""); // Add search state
-  const router = useRouter(); // For navigation
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
   const { cartItems } = useCart();
   const pathname = usePathname() || "";
 
@@ -35,22 +36,21 @@ export default function Navbar({
     { name: "All Products", link: "/products" },
   ];
 
-  const handleSearch = (e: React.FormEvent) => {
+  interface SearchEvent extends React.FormEvent<HTMLFormElement> {}
+
+  const handleSearch = (e: SearchEvent): void => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/search?query=${encodeURIComponent(searchQuery)}`); // Redirect to the search page with the query
+      router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
     }
   };
 
   return (
     <>
       <nav className={styles.navbar}>
-        {/* Main Navbar */}
         <div className={styles.navbarBrand}>
           <Link href="/">Support Saga</Link>
         </div>
-
-        {/* Links */}
         <ul className={styles.navbarLinks}>
           <li
             className={styles.navbarDropdown}
@@ -103,8 +103,6 @@ export default function Navbar({
             </li>
           ))}
         </ul>
-
-        {/* Search Bar */}
         <form onSubmit={handleSearch} className="flex items-center gap-2">
           <input
             type="text"
@@ -120,8 +118,6 @@ export default function Navbar({
             Search
           </button>
         </form>
-
-        {/* Buttons */}
         <div className={styles.navbarButtons}>
           <Link href="/checkout">
             <button className={`${styles.navbarButton} button`}>
@@ -162,8 +158,6 @@ export default function Navbar({
           )}
         </div>
       </nav>
-
-      {/* Sub-Navbar (Only on Products Page) */}
       {pathname.startsWith("/products") && (
         <div className="bg-[var(--color-secondary)] shadow-md">
           <div className="container mx-auto flex justify-center gap-4 px-6 py-4">

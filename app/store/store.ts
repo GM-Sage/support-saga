@@ -1,6 +1,6 @@
-// supportsaga/store/store.ts
+// app/store/store.ts
 import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from './reducers/rootReducer'; // Correct path to rootReducer
+import rootReducer from '../reducers/rootReducer'; // Adjusted path to rootReducer
 
 const store = configureStore({
   reducer: rootReducer,

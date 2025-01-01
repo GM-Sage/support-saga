@@ -3,6 +3,10 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { CartProvider } from "./context/CartContext";
 import { NotificationProvider } from "./context/NotificationContext";
+// Import SessionProvider from next-auth/react
+import { SessionProvider } from "next-auth/react";
+import { Provider } from "react-redux";
+import store from "../app/store/store";
 
 export const metadata = {
   title: "Support Saga",
@@ -17,13 +21,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NotificationProvider>
-        <CartProvider> {/* Wrap the app in CartProvider */}
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-        </CartProvider>
-        </NotificationProvider>
+        {/* Wrap everything in SessionProvider so useSession works */}
+        <SessionProvider>
+          {/* Redux store provider (if you still want to use Redux in the app router) */}
+          <Provider store={store}>
+            <NotificationProvider>
+              <CartProvider>
+                <Navbar />
+                <main>{children}</main>
+                <Footer />
+              </CartProvider>
+            </NotificationProvider>
+          </Provider>
+        </SessionProvider>
       </body>
     </html>
   );

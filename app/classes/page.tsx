@@ -21,7 +21,6 @@ type Class = {
 export default function ClassesPage() {
   const { data: session, status } = useSession();
 
-  // Add logging to debug session and status
   useEffect(() => {
     console.log('Session:', session);
     console.log('Status:', status);
