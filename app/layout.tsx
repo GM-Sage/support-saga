@@ -1,14 +1,10 @@
 import "./globals.css";
+import { Metadata } from "next";
+import Providers from "./providers";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { CartProvider } from "./context/CartContext";
-import { NotificationProvider } from "./context/NotificationContext";
-// Import SessionProvider from next-auth/react
-import { SessionProvider } from "next-auth/react";
-import { Provider } from "react-redux";
-import store from "../app/store/store";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Support Saga",
   description: "Empowering your tech, gaming, and management journey",
 };
@@ -21,19 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* Wrap everything in SessionProvider so useSession works */}
-        <SessionProvider>
-          {/* Redux store provider (if you still want to use Redux in the app router) */}
-          <Provider store={store}>
-            <NotificationProvider>
-              <CartProvider>
-                <Navbar />
-                <main>{children}</main>
-                <Footer />
-              </CartProvider>
-            </NotificationProvider>
-          </Provider>
-        </SessionProvider>
+        {/* The Providers component is a client component, 
+            so we wrap everything in it here. */}
+        <Providers>
+          <Navbar user={{ name: "John Doe", loggedIn: true }} />
+          <main>{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

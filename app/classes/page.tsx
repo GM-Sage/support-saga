@@ -1,5 +1,6 @@
 "use client";
 
+// Import necessary React and Next.js features
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -19,15 +20,19 @@ type Class = {
 };
 
 export default function ClassesPage() {
+  // Destructure session information using NextAuth
   const { data: session, status } = useSession();
 
-  useEffect(() => {
-    console.log('Session:', session);
-    console.log('Status:', status);
-  }, [session, status]);
-
+  // Set up local state for selecting a specific class
   const [selectedClass, setSelectedClass] = useState<Class | null>(null);
 
+  // You can remove these console logs in production
+  useEffect(() => {
+    console.log("Session:", session);
+    console.log("Status:", status);
+  }, [session, status]);
+
+  // Example data: purchased classes
   const purchasedClasses: Class[] = [
     {
       id: 1,
@@ -51,6 +56,7 @@ export default function ClassesPage() {
     },
   ];
 
+  // Example data: available classes
   const availableClasses: Class[] = [
     {
       id: 3,
@@ -66,18 +72,29 @@ export default function ClassesPage() {
     },
   ];
 
+  // While session is still loading, show a loading message
   if (status === "loading") {
-    return <p className="text-center text-lg text-[var(--color-primary)]">Loading session...</p>;
-  }
-
-  if (status === "unauthenticated") {
     return (
       <p className="text-center text-lg text-[var(--color-primary)]">
-        Please <a href="/account" className="text-[var(--color-accent)] underline">sign in</a> to view this page.
+        Loading session...
       </p>
     );
   }
 
+  // If user is not logged in, prompt them to sign in
+  if (status === "unauthenticated") {
+    return (
+      <p className="text-center text-lg text-[var(--color-primary)]">
+        Please{" "}
+        <a href="/account" className="text-[var(--color-accent)] underline">
+          sign in
+        </a>{" "}
+        to view this page.
+      </p>
+    );
+  }
+
+  // Main UI after user is authenticated
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow bg-[var(--color-background)] text-[var(--color-text)] py-12">
@@ -86,6 +103,7 @@ export default function ClassesPage() {
             Our Classes
           </h1>
 
+          {/* If a class is selected, display its details */}
           {selectedClass && (
             <section className="mb-12">
               <button
@@ -94,6 +112,7 @@ export default function ClassesPage() {
               >
                 Back to All Classes
               </button>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                   <Image
@@ -111,27 +130,34 @@ export default function ClassesPage() {
                   <p className="text-lg text-[var(--color-text)] mb-6">
                     {selectedClass.description}
                   </p>
-                  <h3 className="text-2xl font-bold text-[var(--color-primary)] mb-4">
-                    Lessons
-                  </h3>
-                  <ul className="space-y-4">
-                    {selectedClass.lessons?.map((lesson) => (
-                      <li
-                        key={lesson.id}
-                        className="bg-[var(--color-secondary)] p-4 rounded-lg shadow hover:shadow-lg transition"
-                      >
-                        <h4 className="text-lg font-semibold text-[var(--color-primary)] mb-2">
-                          {lesson.title}
-                        </h4>
-                        <p className="text-[var(--color-text)]">Duration: {lesson.duration}</p>
-                      </li>
-                    ))}
-                  </ul>
+                  {selectedClass.lessons && (
+                    <>
+                      <h3 className="text-2xl font-bold text-[var(--color-primary)] mb-4">
+                        Lessons
+                      </h3>
+                      <ul className="space-y-4">
+                        {selectedClass.lessons.map((lesson) => (
+                          <li
+                            key={lesson.id}
+                            className="bg-[var(--color-secondary)] p-4 rounded-lg shadow hover:shadow-lg transition"
+                          >
+                            <h4 className="text-lg font-semibold text-[var(--color-primary)] mb-2">
+                              {lesson.title}
+                            </h4>
+                            <p className="text-[var(--color-text)]">
+                              Duration: {lesson.duration}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
                 </div>
               </div>
             </section>
           )}
 
+          {/* If no class is selected, show purchased and available classes */}
           {!selectedClass && (
             <>
               {purchasedClasses.length > 0 && (
@@ -156,7 +182,9 @@ export default function ClassesPage() {
                         <h3 className="text-xl font-bold text-[var(--color-primary)] mb-2">
                           {cls.title}
                         </h3>
-                        <p className="text-[var(--color-text)]">{cls.description}</p>
+                        <p className="text-[var(--color-text)]">
+                          {cls.description}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -184,7 +212,9 @@ export default function ClassesPage() {
                       <h3 className="text-xl font-semibold text-[var(--color-primary)] mb-2">
                         {cls.title}
                       </h3>
-                      <p className="text-[var(--color-text)]">{cls.description}</p>
+                      <p className="text-[var(--color-text)]">
+                        {cls.description}
+                      </p>
                     </div>
                   ))}
                 </div>
