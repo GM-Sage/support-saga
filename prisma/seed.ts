@@ -1,40 +1,46 @@
 import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
 async function main() {
-  try {
-    // Seed Users with skipDuplicates to avoid duplicate entries
-    await prisma.user.createMany({
-      data: [
-        { name: "John Doe", email: "john@example.com" },
-        { name: "Jane Smith", email: "jane@example.com" },
-      ],
-      skipDuplicates: true, // This avoids inserting duplicates
-    });
-    console.log("Users seeded successfully!");
+  await prisma.user.createMany({
+    data: [
+      { name: "John Doe", email: "john@example.com" },
+      { name: "Jane Smith", email: "jane@example.com" },
+    ],
+    skipDuplicates: true,
+  });
 
-    // Seed Products with skipDuplicates
-    await prisma.product.createMany({
-      data: [
-        {
-          name: "Product 1",
-          price: 19.99,
-          description: "A high-quality product with great value.",
-        },
-        {
-          name: "Product 2",
-          price: 29.99,
-          description: "Another amazing product for your needs.",
-        },
-      ],
-      skipDuplicates: true, // This avoids inserting duplicates
-    });
-    console.log("Products seeded successfully!");
-  } catch (error) {
-    console.error("Seeding error:", error);
-  } finally {
-    await prisma.$disconnect();
-  }
+  console.log("Users seeded successfully!");
+
+  await prisma.product.createMany({
+    data: [
+      {
+        name: "Product 1",
+        price: 19.99,
+        description: "A high-quality product with great value.",
+        isFeatured: true,
+        imageUrl: null,
+        createdAt: new Date(),
+      },
+      {
+        name: "Product 2",
+        price: 29.99,
+        description: "Another amazing product for your needs.",
+        isFeatured: false,
+        imageUrl: null,
+        createdAt: new Date(),
+      },
+    ],
+    skipDuplicates: true,
+  });
+
+  console.log("Products seeded successfully!");
 }
 
-main();
+main()
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  })
+  .finally(() => prisma.$disconnect());

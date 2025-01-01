@@ -1,66 +1,135 @@
-import { prisma } from "@/lib/prisma"; // Adjust the path if needed
-import styles from "../components/Products.module.css";
+"use client";
 
-export default async function ProductsPage() {
-  const featuredProducts = await prisma.product.findMany({
-    where: { isFeatured: true },
-    orderBy: { createdAt: "desc" },
-  });
+import { useState, useEffect } from "react";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import Image from "next/image";
+import Link from "next/link";
 
-  const newArrivals = await prisma.product.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 5,
-  });
+// Define the Product type for type safety
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl?: string;
+};
+
+export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const response = await fetch("/api/printful-products");
+        const data = await response.json();
+        setProducts(
+          data.result.map((item: any) => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            imageUrl: item.thumbnail_url,
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    }
+    fetchProducts();
+  }, []);
 
   return (
-    <div className={styles.productsContainer}>
+    <main className="bg-[var(--color-background)] text-[var(--color-text)]">
       {/* Hero Section */}
-      <div className={styles.productsHeader}>
-        <h1>Explore Our Products</h1>
-        <p>Find high-quality items tailored to your journey</p>
-      </div>
+      <section className="relative">
+        <Carousel
+          showThumbs={false}
+          infiniteLoop={true}
+          autoPlay={true}
+          interval={5000}
+          showStatus={false}
+          className="max-w-7xl mx-auto"
+        >
+          {[ // Carousel Slides
+            <div className="relative" key="slide1">
+              <Image
+                src="/images/spotlight1.jpg"
+                alt="Spotlight 1"
+                width={1600}
+                height={600}
+                className="rounded-lg shadow-lg object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black/70 flex flex-col justify-center items-center text-center">
+                <h2 className="text-3xl md:text-5xl font-bold text-[var(--color-text)]">
+                  Gear Up For Adventure
+                </h2>
+                <p className="mt-4 text-lg md:text-xl text-[var(--color-text)]">
+                  Explore the best gear for your journey!
+                </p>
+                <Link
+                  href="/products"
+                  className="mt-6 button px-6 py-3 bg-[var(--color-primary)] text-[var(--color-text)] rounded-full hover:bg-[var(--color-hover)] transition-all"
+                >
+                  Shop Now
+                </Link>
+              </div>
+            </div>,
+            <div className="relative" key="slide2">
+              <Image
+                src="/images/spotlight2.jpg"
+                alt="Spotlight 2"
+                width={1600}
+                height={600}
+                className="rounded-lg shadow-lg object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black/70 flex flex-col justify-center items-center text-center">
+                <h2 className="text-3xl md:text-5xl font-bold text-[var(--color-text)]">
+                  Discover New Adventures
+                </h2>
+                <p className="mt-4 text-lg md:text-xl text-[var(--color-text)]">
+                  Find gear that supports your passion!
+                </p>
+                <Link
+                  href="/products"
+                  className="mt-6 button px-6 py-3 bg-[var(--color-primary)] text-[var(--color-text)] rounded-full hover:bg-[var(--color-hover)] transition-all"
+                >
+                  Explore Now
+                </Link>
+              </div>
+            </div>,
+          ]}
+        </Carousel>
+      </section>
 
       {/* Featured Products Section */}
-      <section>
-        <h2 className={styles.productTitle}>Featured Products</h2>
-        <div className={styles.productsGrid}>
-          {featuredProducts.map((product) => (
-            <div key={product.id} className={styles.productCard}>
-              <img
-                src={product.imageUrl || "/placeholder.jpg"} // Replace with actual URL or default
-                alt={product.name}
-                className={styles.productImage}
-              />
-              <h3 className={styles.productTitle}>{product.name}</h3>
-              <p className={styles.productPrice}>
-                ${product.price.toFixed(2)}
-              </p>
-              <button className={styles.addToCartButton}>Add to Cart</button>
-            </div>
-          ))}
+      <section className="py-12">
+        <div className="container mx-auto">
+          <h2 className="text-center text-4xl font-bold mb-12 text-[var(--color-primary)]">
+            Featured Products
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="bg-[var(--color-secondary)] text-center rounded-lg shadow-lg p-6 hover:shadow-2xl transition-transform transform hover:scale-105"
+              >
+                <Image
+                  src={product.imageUrl || "/images/default-product.jpg"}
+                  alt={product.name}
+                  width={300}
+                  height={300}
+                  className="rounded-lg"
+                />
+                <h3 className="text-lg font-bold mt-4 text-[var(--color-primary)]">
+                  {product.name}
+                </h3>
+                <p className="text-[var(--color-accent)] mt-2 text-lg">
+                  ${product.price.toFixed(2)}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
-
-      {/* New Arrivals Section */}
-      <section>
-        <h2 className={styles.productTitle}>New Arrivals</h2>
-        <div className={styles.productsGrid}>
-          {newArrivals.map((product) => (
-            <div key={product.id} className={styles.productCard}>
-              <img
-                src={product.imageUrl || "/placeholder.jpg"}
-                alt={product.name}
-                className={styles.productImage}
-              />
-              <h3 className={styles.productTitle}>{product.name}</h3>
-              <p className={styles.productPrice}>
-                ${product.price.toFixed(2)}
-              </p>
-              <button className={styles.addToCartButton}>Add to Cart</button>
-            </div>
-          ))}
-        </div>
-      </section>
-    </div>
+    </main>
   );
 }

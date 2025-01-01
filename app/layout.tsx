@@ -1,12 +1,12 @@
-import './globals.css';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import { CartProvider } from './context/CartContext';
-import Providers from './components/Providers';
+import "./globals.css";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import { CartProvider } from "./context/CartContext";
+import { NotificationProvider } from "./context/NotificationContext";
 
 export const metadata = {
-  title: 'Support Saga',
-  description: 'Empowering your tech, gaming, and management journey',
+  title: "Support Saga",
+  description: "Empowering your tech, gaming, and management journey",
 };
 
 export default function RootLayout({
@@ -17,13 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <CartProvider>
-            <Navbar />
-            <div style={{ minHeight: 'calc(100vh - 100px)' }}>{children}</div>
-            <Footer />
-          </CartProvider>
-        </Providers>
+        <NotificationProvider>
+        <CartProvider> {/* Wrap the app in CartProvider */}
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </CartProvider>
+        </NotificationProvider>
       </body>
     </html>
   );

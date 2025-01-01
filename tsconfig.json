@@ -4,25 +4,38 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
+    "noImplicitAny": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "baseUrl": ".",
+    "baseUrl": ".", 
     "paths": {
-      "@lib/*": ["lib/*"]
-    }
+      "@/*": ["./*"], 
+      "@components/*": ["app/components/*"],
+      "@store/*": ["app/store/*"],
+      "@lib/*": ["lib/*"], 
+      "next-auth/react": ["node_modules/next-auth/react"],
+      "next-auth/jwt": ["node_modules/next-auth/jwt"]
+    },
+    "plugins": [{ "name": "next" }]
   },
-  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", "prisma/**/*.ts", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    "prisma/**/*.ts",
+    ".next/types/**/*.ts",
+    "react-slick.d.ts",
+    "app/**/*",
+    "lib/**/*",
+    "app/types/**/*.d.ts" // Ensure this matches the location of next-auth.d.ts
+  ],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

@@ -1,18 +1,36 @@
 /* app/(site)/globals.css */
 
 /* Font Import */
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap");
 @import "react-responsive-carousel/lib/styles/carousel.min.css";
+@import "~react-toastify/dist/ReactToastify.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Font Face */
+@font-face {
+  font-family: "Cinzel";
+  src: url("/fonts/Cinzel-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
 
 /* Theme Variables */
 :root {
-  --color-primary: #c9b037;
-  --color-secondary: #3b3a36;
-  --color-text: #f0f0e8;
-  --color-background: #1a1a1a;
-  --color-accent: #d4af37;
-  --color-success: #7cae3c;
-  --color-error: #8e1c1c;
+  --color-primary: #18569e; /* Deep blue for primary elements */
+  --color-secondary: #2a2a2a; /* Dark grey for secondary elements */
+  --color-text: #ffffff; /* White for text */
+  --color-background: #0f0f0f; /* Near-black background */
+  --color-accent: #337ab7; /* Lighter blue for accents */
+  --color-hover: #004080; /* Darker blue for hover states */
+  --color-success: #3cb371; /* Green for success */
+  --color-error: #ff5c5c; /* Red for errors */
+
+  --font-hero: "Cinzel", serif; /* For hero headings */
+  --font-header: "Cinzel", serif; /* General headers */
+  --font-body: "Roboto", sans-serif; /* For body text */
 }
 
 /* Reset Styles */
@@ -22,12 +40,14 @@
   box-sizing: border-box;
 }
 
-html, body {
-  font-family: "Roboto", sans-serif;
+html,
+body {
+  font-family: var(--font-body);
   background-color: var(--color-background);
   color: var(--color-text);
   line-height: 1.6;
   height: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrollbars */
 }
 
 body {
@@ -36,116 +56,323 @@ body {
   min-height: 100vh;
 }
 
-main {
-  flex: 1;
-}
-
-/* Anchor Tag Styles */
-a {
-  text-decoration: none;
-  color: var(--color-text);
-}
-
-a:hover {
-  color: var(--color-accent);
-}
-
-/* Dropdown */
-.navbarDropdown {
-  position: relative;
-}
-
-.dropdownContent {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #3c3c3c;
-  border: 1px solid #d4af37;
-  border-radius: 4px;
+#root {
   display: flex;
   flex-direction: column;
-  min-width: 200px;
-  padding: 0.5rem 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  list-style: none;
-  transition: opacity 0.3s ease; /* Smooth dropdown animation */
+  min-height: 100vh;
 }
 
-.dropdownLink {
-  color: #f0f0e8;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  font-weight: bold; /* Highlight dropdown options */
-  white-space: nowrap;
+main {
+  flex: 1;
+  padding: 2rem;
 }
 
-.dropdownLink:hover {
-  background-color: #d4af37;
-  color: #3c3c3c;
+/* Heading Styles */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-header);
+  color: var(--color-primary);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  height: 50vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.hero img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.hero h1 {
+  font-family: var(--font-hero);
+  color: var(--color-primary);
+  font-size: 4rem;
+  text-transform: uppercase;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+.hero p {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  line-height: 1.8;
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-text);
+  text-align: center;
 }
 
 /* Footer Styles */
 footer {
   margin-top: auto;
+  padding: 2rem 1rem;
   background-color: var(--color-secondary);
   color: var(--color-text);
-  padding: 2rem 1rem; /* More padding for better spacing */
   text-align: center;
-  border-top: 1px solid var(--color-primary); /* Optional border */
+  border-top: 1px solid var(--color-primary);
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Utility Classes */
-.m-0 {
-  margin: 0 !important;
-}
-
-.p-2 {
-  padding: 2rem !important;
-}
-
 .flex-center {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.text-center {
-  text-align: center;
-}
-
-.hidden {
-  display: none;
-}
-
-.block {
-  display: block;
-}
-
-/* Responsive Image */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Hero Section */
-.hero {
-  text-align: center;
-  padding: 3rem 1rem;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  color: var(--color-background);
+/* Scoped Button Styles */
+main .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-hero);
+  text-transform: uppercase;
+  color: var(--color-text); /* White text */
+  background: var(--color-primary); /* Deep blue background */
+  border: 2px solid var(--color-primary);
   border-radius: 8px;
-  margin-bottom: 2rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); /* Subtle shadow */
+  transition: all 0.3s ease-in-out;
+  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.5); /* Subtle text shadow */
 }
 
-.hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+main .button:hover {
+  background: var(--color-hover); /* Darker blue on hover */
+  color: var(--color-text); /* Keep text white */
+  border-color: var(--color-hover);
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
-.hero p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+main .button-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-hero);
+  text-transform: uppercase;
+  color: var(--color-primary); /* Deep blue text */
+  background: transparent;
+  border: 2px solid var(--color-primary); /* Deep blue border */
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
 }
+
+main .button-outline:hover {
+  background: var(--color-primary); /* Deep blue background */
+  color: var(--color-text); /* White text */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); /* Hover shadow */
+}
+
+
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Space between icon and text */
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-hero); /* Cinzel */
+  color: var(--color-primary); /* Deep blue text */
+  background: transparent;
+  border: 2px solid var(--color-primary); /* Deep blue border */
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+.button-icon:hover {
+  background: var(--color-primary); /* Blue background */
+  color: var(--color-text); /* White text */
+}
+
+/* Scoped Button Styles for Homepage */
+.homepage-buttons .homepage-button,
+.homepage-buttons .homepage-button-outline,
+.homepage-buttons .homepage-button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-hero); /* Using Cinzel for consistency */
+  text-transform: uppercase;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Primary Button */
+.homepage-buttons .homepage-button {
+  color: var(--color-text);
+  background: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.5);
+}
+
+.homepage-buttons .homepage-button:hover {
+  background: var(--color-hover);
+  border-color: var(--color-hover);
+  transform: scale(1.05);
+}
+
+/* Outline Button */
+.homepage-buttons .homepage-button-outline {
+  color: var(--color-text);
+  background: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.5);
+}
+
+.homepage-buttons .homepage-button-outline:hover {
+  background: var(--color-hover);
+  border-color: var(--color-hover);
+  transform: scale(1.05);
+}
+
+
+
+
+/* Icon Button */
+.homepage-buttons .homepage-button-icon {
+  color: var(--color-text);
+  background: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  text-shadow: 0px 0px 6px rgba(0, 0, 0, 0.5);
+}
+
+.homepage-buttons .homepage-button-icon:hover {
+  background: var(--color-hover);
+  border-color: var(--color-hover);
+  transform: scale(1.05);
+}
+
+
+
+/* Carousel Adjustments */
+.carousel .control-dots {
+  position: absolute;
+  bottom: 0;
+  z-index: 10;
+}
+
+.carousel .legend {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: var(--color-text);
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+/* Category Tabs */
+.category-tabs {
+  display: flex;
+  justify-content: start;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background-color: var(--color-secondary);
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  right: 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Toast Container */
+.toast-container {
+  font-family: var(--font-header); /* Use the Cinzel font for headings */
+  color: var(--color-text);
+}
+
+.toast {
+  background-color: var(--color-secondary); /* Dark gray background */
+  color: var(--color-text); /* White text */
+  border: 2px solid var(--color-primary); /* Blue border */
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 12px rgba(25, 85, 180, 0.8);
+}
+
+/* Toast Success */
+.toast-success {
+  border: 2px solid var(--color-success); /* Green border */
+  box-shadow: 0 0 12px var(--color-success), 0 0 24px rgba(60, 179, 113, 0.5);
+}
+
+/* Toast Error */
+.toast-error {
+  border: 2px solid var(--color-error); /* Red border */
+  box-shadow: 0 0 12px var(--color-error), 0 0 24px rgba(255, 92, 92, 0.5);
+}
+
+/* Unsubscribe Page */
+.unsubscribe-page {
+  text-align: center;
+  padding: 40px;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: var(--font-body);
+}
+
+.unsubscribe-page h1 {
+  color: var(--color-primary);
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.unsubscribe-page p {
+  font-size: 1rem;
+  margin: 20px 0;
+}
+
+.unsubscribe-page button {
+  padding: 10px 20px;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.unsubscribe-page button:hover {
+  background-color: var(--color-hover);
+}
+

@@ -8,18 +8,25 @@ datasource db {
 }
 
 model User {
-  id     Int     @id @default(autoincrement())
-  name   String
-  email  String  @unique
-  orders Order[]
+  id         Int       @id @default(autoincrement())
+  name       String
+  email      String    @unique
+  password   String
+  orders     Order[]   // Relation to orders
+  classes    Class[]   // Users can enroll in multiple classes
+  subscribed Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  role       String    @default("user") // Add role with a default value
 }
+
 
 model Order {
   id         Int         @id @default(autoincrement())
   userId     Int
-  user       User        @relation(fields: [userId], references: [id])
+  user       User        @relation(fields: [userId], references: [id]) // Foreign key relation to User
   totalPrice Float
-  orderItems OrderItem[]
+  orderItems OrderItem[] // Relation to order items
 }
 
 model OrderItem {
@@ -27,8 +34,8 @@ model OrderItem {
   orderId   Int
   productId Int
   price     Float
-  order     Order   @relation(fields: [orderId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id]) // Foreign key relation to Order
+  product   Product @relation(fields: [productId], references: [id]) // Foreign key relation to Product
 }
 
 model Product {
@@ -37,8 +44,35 @@ model Product {
   description String
   price       Float
   imageUrl    String?      // Optional field for product image
-  isFeatured  Boolean      @default(false) // New field to mark featured products
-  orderItems  OrderItem[]
-  createdAt   DateTime     @default(now()) // Track when products are added
+  isFeatured  Boolean      @default(false) // Field to mark featured products
+  orderItems  OrderItem[]  // Relation to order items
+  createdAt   DateTime     @default(now()) // Track when the product was added
 }
 
+model Class {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  imageUrl    String?   // Optional image for the class
+  createdAt   DateTime  @default(now()) // Track when the class was created
+  updatedAt   DateTime  @updatedAt     // Automatically update on change
+  userId      Int?      // Optional field to track the class creator
+  user        User?     @relation(fields: [userId], references: [id]) // Foreign key relation to User
+  sections    Section[] // Relation to sections
+}
+
+model Section {
+  id        Int       @id @default(autoincrement())
+  title     String
+  classId   Int
+  class     Class     @relation(fields: [classId], references: [id]) // Foreign key relation to Class
+  lessons   Lesson[]  // Relation to lessons
+}
+
+model Lesson {
+  id        Int       @id @default(autoincrement())
+  title     String
+  videoUrl  String
+  sectionId Int
+  section   Section   @relation(fields: [sectionId], references: [id]) // Foreign key relation to Section
+}
