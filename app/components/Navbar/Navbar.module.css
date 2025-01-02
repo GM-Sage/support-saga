@@ -1,0 +1,254 @@
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-secondary);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: var(--font-header);
+}
+
+/* Brand */
+.navbarBrand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.navbarBrand a {
+  text-decoration: none;
+  color: var(--color-primary);
+  transition: color 0.3s ease;
+}
+
+.navbarBrand a:hover {
+  color: var(--color-accent);
+}
+
+/* Links */
+.navbarLinks {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbarLink {
+  color: var(--color-text);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1rem;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.navbarLink:hover {
+  color: var(--color-accent);
+}
+
+.navbarLink.active {
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+/* Dropdown */
+.navbarDropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdownContent {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--color-secondary);
+  border: 1px solid var(--color-primary);
+  padding: 0.5rem 0;
+  z-index: 1000;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dropdownLink {
+  color: var(--color-text);
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdownLink:hover {
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
+}
+
+/* Dropdown Menu */
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--color-secondary);
+  padding: 0.5rem;
+  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  width: 160px;
+  text-align: left;
+}
+
+.dropdownItem {
+  padding: 0.5rem 1rem;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+  display: block;
+}
+
+.dropdownItem:hover {
+  background: var(--color-accent);
+  color: var(--color-secondary);
+}
+
+/* Fix Cart and User Alignment */
+.navbarButtons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-left: 1rem;
+}
+
+/* Cart Count */
+.cartCount {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: orange;
+  color: white;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+/* Search Bar */
+.navbarSearch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbarSearchInput {
+  padding: 0.5rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+.navbarSearchButton {
+  padding: 0.5rem 1rem;
+  background: var(--color-primary);
+  color: var(--color-text);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.navbarSearchButton:hover {
+  background: var(--color-accent);
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Buttons */
+.navbarButtons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbarButton {
+  background: var(--color-primary);
+  color: var(--color-text);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease-in-out;
+  height: 2.5rem;
+}
+
+.navbarButton:hover {
+  background: var(--color-accent);
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Cart Button */
+.cartButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease-in-out;
+  background: var(--color-primary);
+  color: var(--color-text);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  height: 2.5rem;
+}
+
+.cartButton:hover {
+  background: var(--color-accent);
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Subnav */
+.subNavbar {
+  background: var(--color-secondary);
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.subNavbarLink {
+  text-decoration: none;
+  color: white;
+  background: var(--color-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.subNavbarLink:hover {
+  background: var(--color-accent);
+  color: var(--color-text);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .navbarLinks {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .navbarButtons {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 0;
+  }
+
+  .navbarButton,
+  .cartButton {
+    width: 100%;
+    justify-content: center;
+  }
+}

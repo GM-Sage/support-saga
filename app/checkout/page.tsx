@@ -1,5 +1,3 @@
-// /app/checkout/page.tsx
-
 "use client";
 
 import { useCart } from "../context/CartContext";
@@ -11,17 +9,17 @@ export default function CheckoutPage() {
 
   const handleCheckout = async () => {
     try {
-      const response = await fetch("/api/checkout", {
+      const response = await fetch("/api/stripe/checkout", {
         method: "POST",
         body: JSON.stringify({ items: cartItems }),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      const { sessionId } = await response.json();
+      const { url } = await response.json();
 
       // Redirect to Stripe checkout
-      window.location.href = sessionId;
+      window.location.href = url;
     } catch (error) {
       console.error("Error during checkout:", error);
     }

@@ -1,8 +1,9 @@
 import "./globals.css";
 import { Metadata } from "next";
 import Providers from "./providers";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer"; // Adjusted path
+
 
 export const metadata: Metadata = {
   title: "Support Saga",
@@ -20,7 +21,7 @@ export default function RootLayout({
         {/* The Providers component is a client component, 
             so we wrap everything in it here. */}
         <Providers>
-          <Navbar user={{ name: "John Doe", loggedIn: true }} />
+          <Navbar />
           <main>{children}</main>
           <Footer />
         </Providers>

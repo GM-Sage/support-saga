@@ -11,11 +11,13 @@ module.exports = {
         xs: "475px", // Custom breakpoint for extra small screens
       },
       colors: {
-        primary: "#c9b037", // Customize this for your branding
-        secondary: "#3b3a36",
-      },
-      spacing: {
-        18: "4.5rem", // Example custom spacing
+        colors: {
+          primary: "var(--color-primary)",
+          accent: "var(--color-accent)"
+        },
+        spacing: {
+          18: "4.5rem", // Example custom spacing
+        },
       },
     },
   },

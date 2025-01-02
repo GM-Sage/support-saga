@@ -1,46 +1,54 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.user.createMany({
-    data: [
-      { name: "John Doe", email: "john@example.com" },
-      { name: "Jane Smith", email: "jane@example.com" },
-    ],
-    skipDuplicates: true,
+  // Create Consultants
+  const consultant1 = await prisma.consultant.create({
+    data: {
+      name: 'Alice Johnson',
+      email: 'alice.johnson@example.com',
+      calendlyLink: 'https://calendly.com/alicejohnson',
+    },
   });
 
-  console.log("Users seeded successfully!");
-
-  await prisma.product.createMany({
-    data: [
-      {
-        name: "Product 1",
-        price: 19.99,
-        description: "A high-quality product with great value.",
-        isFeatured: true,
-        imageUrl: null,
-        createdAt: new Date(),
-      },
-      {
-        name: "Product 2",
-        price: 29.99,
-        description: "Another amazing product for your needs.",
-        isFeatured: false,
-        imageUrl: null,
-        createdAt: new Date(),
-      },
-    ],
-    skipDuplicates: true,
+  const consultant2 = await prisma.consultant.create({
+    data: {
+      name: 'Bob Smith',
+      email: 'bob.smith@example.com',
+      calendlyLink: 'https://calendly.com/bobsmith',
+    },
   });
 
-  console.log("Products seeded successfully!");
+  // Create Services
+  await prisma.service.create({
+    data: {
+      name: 'Business Consulting',
+      description: 'Expert advice to help you grow your business.',
+      availability: 'AVAILABLE',
+      consultants: {
+        connect: [{ id: consultant1.id }, { id: consultant2.id }],
+      },
+    },
+  });
+
+  await prisma.service.create({
+    data: {
+      name: 'Technical Consulting',
+      description: 'Get help with your technical challenges.',
+      availability: 'UNAVAILABLE',
+      consultants: {
+        connect: [{ id: consultant2.id }],
+      },
+    },
+  });
 }
 
 main()
-  .catch((error) => {
-    console.error(error);
+  .catch((e) => {
+    console.error(e);
     process.exit(1);
   })
-  .finally(() => prisma.$disconnect());
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

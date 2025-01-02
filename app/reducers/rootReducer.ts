@@ -1,12 +1,10 @@
 // app/reducers/rootReducer.ts
 import { combineReducers } from '@reduxjs/toolkit';
-
-// Import your slices here
-import exampleSlice from './exampleSlice'; // Adjust the import
+import cartSlice from './cartSlice'; // Update path to cartSlice
 
 const rootReducer = combineReducers({
-  example: exampleSlice,
-  // Add other slices here
+  cart: cartSlice, // Use the cart slice
+  // Add other slices if needed in the future
 });
 
 export default rootReducer;

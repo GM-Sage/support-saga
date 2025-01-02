@@ -1,78 +1,151 @@
+// schema.prisma
+
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js" // Generates the Prisma Client for interacting with the database
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"        // Specifies PostgreSQL as the database provider
+  url      = env("DATABASE_URL") // Connects to the database using the DATABASE_URL from environment variables
+}
+
+/// Enum for User Roles to enforce role integrity and prevent typos
+enum UserRole {
+  USER
+  ADMIN
+  MODERATOR
+}
+
+/// Enum to indicate if a service is available
+enum ServiceAvailability {
+  AVAILABLE
+  UNAVAILABLE
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  name       String
-  email      String    @unique
-  password   String
-  orders     Order[]   // Relation to orders
-  classes    Class[]   // Users can enroll in multiple classes
-  subscribed Boolean   @default(true)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  role       String    @default("user") // Add role with a default value
+  id              Int           @id @default(autoincrement())     // Primary key with auto-increment
+  name            String                                           // User's full name
+  email           String        @unique                           // Unique email for each user
+  password        String                                           // Hashed password
+  orders          Order[]                                          // One-to-many relation with Order
+  enrolledClasses Enrollment[]                                    // Many-to-many relation with Class through Enrollment
+  createdClasses  Class[]                                          // One-to-many relation with Class (classes created by the user)
+  subscribed      Boolean       @default(true)                    // Subscription status with default value
+  createdAt       DateTime      @default(now())                   // Timestamp for creation
+  updatedAt       DateTime      @updatedAt                        // Timestamp for last update
+  role            UserRole      @default(USER)                     // Enum to define user role with default value
+
+  @@index([email]) // Index for faster lookup by email
 }
 
-
 model Order {
-  id         Int         @id @default(autoincrement())
-  userId     Int
-  user       User        @relation(fields: [userId], references: [id]) // Foreign key relation to User
-  totalPrice Float
-  orderItems OrderItem[] // Relation to order items
+  id         Int         @id @default(autoincrement())             // Primary key
+  userId     Int                                             // Foreign key referencing User
+  user       User        @relation(fields: [userId], references: [id]) // Many-to-one relation with User
+  totalPrice Float                                           // Total price of the order
+  orderItems OrderItem[]                                     // One-to-many relation with OrderItem
+  createdAt  DateTime     @default(now())                     // Timestamp for order creation
+  updatedAt  DateTime     @updatedAt                          // Timestamp for last update
+
+  @@index([userId]) // Index for faster lookup by userId
 }
 
 model OrderItem {
-  id        Int     @id @default(autoincrement())
-  orderId   Int
-  productId Int
-  price     Float
-  order     Order   @relation(fields: [orderId], references: [id]) // Foreign key relation to Order
-  product   Product @relation(fields: [productId], references: [id]) // Foreign key relation to Product
+  id        Int     @id @default(autoincrement())             // Primary key
+  orderId   Int                                             // Foreign key referencing Order
+  productId Int                                             // Foreign key referencing Product
+  price     Float                                           // Price of the individual item
+  order     Order   @relation(fields: [orderId], references: [id])   // Many-to-one relation with Order
+  product   Product @relation(fields: [productId], references: [id]) // Many-to-one relation with Product
+  quantity  Int      @default(1)                              // Quantity of the product in the order
+
+  @@index([orderId])    // Index for faster lookup by orderId
+  @@index([productId])  // Index for faster lookup by productId
 }
 
 model Product {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String
-  price       Float
-  imageUrl    String?      // Optional field for product image
-  isFeatured  Boolean      @default(false) // Field to mark featured products
-  orderItems  OrderItem[]  // Relation to order items
-  createdAt   DateTime     @default(now()) // Track when the product was added
+  id          Int         @id @default(autoincrement())     // Primary key
+  name        String                                       // Name of the product
+  description String                                       // Detailed description
+  price       Float                                        // Price of the product
+  imageUrl    String?                                      // Optional image URL
+  isFeatured  Boolean     @default(false)                  // Flag to indicate if the product is featured
+  orderItems  OrderItem[]                                 // One-to-many relation with OrderItem
+  createdAt   DateTime    @default(now())                 // Timestamp for creation
+  updatedAt   DateTime    @updatedAt                      // Timestamp for last update
+
+  @@index([isFeatured]) // Index to quickly retrieve featured products
 }
 
 model Class {
-  id          Int       @id @default(autoincrement())
-  title       String
-  description String
-  imageUrl    String?   // Optional image for the class
-  createdAt   DateTime  @default(now()) // Track when the class was created
-  updatedAt   DateTime  @updatedAt     // Automatically update on change
-  userId      Int?      // Optional field to track the class creator
-  user        User?     @relation(fields: [userId], references: [id]) // Foreign key relation to User
-  sections    Section[] // Relation to sections
+  id          Int          @id @default(autoincrement())            // Primary key
+  title       String                                             // Title of the class
+  description String                                             // Description of the class content
+  imageUrl    String?                                            // Optional image URL
+  createdAt   DateTime     @default(now())                       // Timestamp for creation
+  updatedAt   DateTime     @updatedAt                            // Timestamp for last update
+  userId      Int?                                              // Foreign key referencing User (creator)
+  user        User?        @relation(fields: [userId], references: [id]) // Many-to-one relation with User
+  sections    Section[]                                         // One-to-many relation with Section
+  enrollments Enrollment[]                                      // Many-to-many relation with User through Enrollment
+
+  @@index([userId]) // Index for faster lookup by userId
 }
 
 model Section {
-  id        Int       @id @default(autoincrement())
-  title     String
-  classId   Int
-  class     Class     @relation(fields: [classId], references: [id]) // Foreign key relation to Class
-  lessons   Lesson[]  // Relation to lessons
+  id        Int      @id @default(autoincrement())                // Primary key
+  title     String                                              // Title of the section
+  classId   Int                                                 // Foreign key referencing Class
+  class     Class    @relation(fields: [classId], references: [id]) // Many-to-one relation with Class
+  lessons   Lesson[]                                            // One-to-many relation with Lesson
+
+  @@index([classId]) // Index for faster lookup by classId
 }
 
 model Lesson {
-  id        Int       @id @default(autoincrement())
-  title     String
-  videoUrl  String
-  sectionId Int
-  section   Section   @relation(fields: [sectionId], references: [id]) // Foreign key relation to Section
+  id        Int     @id @default(autoincrement())                // Primary key
+  title     String                                              // Title of the lesson
+  videoUrl  String                                              // URL to the lesson's video
+  sectionId Int                                                 // Foreign key referencing Section
+  section   Section @relation(fields: [sectionId], references: [id]) // Many-to-one relation with Section
+  duration  Int     @default(0)                                  // Duration of the lesson in minutes
+
+  @@index([sectionId]) // Index for faster lookup by sectionId
+}
+
+model Enrollment {
+  id         Int      @id @default(autoincrement())               // Primary key
+  userId     Int                                                 // Foreign key referencing User
+  classId    Int                                                 // Foreign key referencing Class
+  enrolledAt DateTime @default(now())                           // Timestamp when the user enrolled
+
+  user  User  @relation(fields: [userId], references: [id])       // Many-to-one relation with User
+  class Class @relation(fields: [classId], references: [id])      // Many-to-one relation with Class
+
+  @@unique([userId, classId]) // Composite unique constraint to prevent duplicate enrollments
+  @@index([userId, classId])  // Composite index for faster lookup
+}
+
+model Service {
+  id           Int           @id @default(autoincrement())    // Primary key
+  name         String                                         // Name of the service
+  description  String                                         // Detailed description
+  availability ServiceAvailability @default(AVAILABLE)         // Enum to indicate service availability
+  consultants  Consultant[]                                   // Many-to-many relation with Consultant
+  createdAt    DateTime      @default(now())                  // Timestamp for creation
+  updatedAt    DateTime      @updatedAt                       // Timestamp for last update
+
+  @@index([availability]) // Index to quickly retrieve available services
+}
+
+model Consultant {
+  id            Int           @id @default(autoincrement())   // Primary key
+  name          String                                         // Consultant's full name
+  email         String        @unique                        // Unique email for each consultant
+  calendlyLink  String?                                        // Optional Calendly scheduling link
+  services      Service[]                                       // Many-to-many relation with Service
+  createdAt     DateTime      @default(now())                // Timestamp for creation
+  updatedAt     DateTime      @updatedAt                     // Timestamp for last update
+
+  @@index([email]) // Index for faster lookup by email
 }

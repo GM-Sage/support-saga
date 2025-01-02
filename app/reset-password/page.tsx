@@ -49,12 +49,19 @@ export default function ResetPasswordPage() {
             required
             className="p-3 text-[var(--color-text)] bg-[var(--color-background)] border border-[var(--color-primary)] rounded focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
           />
+          {/* 
+            Updated button styles to replicate .cartButton hover:
+            - White text by default
+            - Transitions for smooth hover effects
+            - Scale + shadow on hover 
+          */}
           <button
             type="submit"
             disabled={isLoading}
-            className={`p-3 font-semibold text-[var(--color-secondary)] bg-[var(--color-primary)] rounded hover:text-[#f0f0e8] transition-colors ${
-              isLoading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`p-3 font-semibold text-white bg-[var(--color-primary)] rounded 
+                        transition-all duration-300
+                        hover:bg-[var(--color-accent)] hover:scale-105 hover:shadow-md
+                        ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             {isLoading ? "Processing..." : "Send Reset Link"}
           </button>

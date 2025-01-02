@@ -8,22 +8,27 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
+    "module": "commonjs", // Ensure this is set to "commonjs"
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".", 
+    "types": ["jest", "node"],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"], 
+      "@/*": ["./*"],
       "@components/*": ["app/components/*"],
       "@store/*": ["app/store/*"],
-      "@lib/*": ["lib/*"], 
+      "@lib/*": ["lib/*"],
+      "@types/*": ["types/*"],
       "next-auth/react": ["node_modules/next-auth/react"],
-      "next-auth/jwt": ["node_modules/next-auth/jwt"]
+      "next-auth/jwt": ["node_modules/next-auth/jwt"],
+      "@pages/*": ["pages/*"],
+      "@utils/*": ["utils/*"]
     },
+    "typeRoots": ["./types", "./node_modules/@types"],
     "plugins": [{ "name": "next" }]
   },
   "include": [
@@ -35,7 +40,9 @@
     "react-slick.d.ts",
     "app/**/*",
     "lib/**/*",
-    "app/types/**/*.d.ts" // Ensure this matches the location of next-auth.d.ts
+    "types/**/*.d.ts",
+    "types/**/*.ts",
+    "**/*.test.tsx"
   ],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

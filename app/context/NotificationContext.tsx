@@ -3,7 +3,9 @@
 import React, { createContext, useContext, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CustomModal from "../components/CustomModal";
+import CustomModal from "../components/CustomModal/CustomModal"; // Adjusted path
+
+
 
 interface ModalContent {
   title: string;

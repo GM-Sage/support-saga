@@ -16,22 +16,40 @@ type Product = {
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchProducts() {
       try {
         const response = await fetch("/api/printful-products");
+
+        // Check if the response is successful
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        }
+
         const data = await response.json();
+
+        // Ensure that data is an array
+        if (!Array.isArray(data)) {
+          throw new Error('Unexpected data format received from the server.');
+        }
+
         setProducts(
-          data.result.map((item: any) => ({
+          data.map((item: any) => ({
             id: item.id,
             name: item.name,
             price: item.price,
             imageUrl: item.thumbnail_url,
           }))
         );
-      } catch (error) {
-        console.error("Error fetching products:", error);
+      } catch (error: any) {
+        console.error("Error fetching products:", error.message);
+        setError(error.message || 'Failed to fetch products.');
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchProducts();
@@ -49,7 +67,8 @@ export default function ProductsPage() {
           showStatus={false}
           className="max-w-7xl mx-auto"
         >
-          {[ // Carousel Slides
+          {[
+            // Carousel Slide 1
             <div className="relative" key="slide1">
               <Image
                 src="/images/spotlight1.jpg"
@@ -73,6 +92,8 @@ export default function ProductsPage() {
                 </Link>
               </div>
             </div>,
+
+            // Carousel Slide 2
             <div className="relative" key="slide2">
               <Image
                 src="/images/spotlight2.jpg"
@@ -106,28 +127,41 @@ export default function ProductsPage() {
           <h2 className="text-center text-4xl font-bold mb-12 text-[var(--color-primary)]">
             Featured Products
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="bg-[var(--color-secondary)] text-center rounded-lg shadow-lg p-6 hover:shadow-2xl transition-transform transform hover:scale-105"
-              >
-                <Image
-                  src={product.imageUrl || "/images/default-product.jpg"}
-                  alt={product.name}
-                  width={300}
-                  height={300}
-                  className="rounded-lg"
-                />
-                <h3 className="text-lg font-bold mt-4 text-[var(--color-primary)]">
-                  {product.name}
-                </h3>
-                <p className="text-[var(--color-accent)] mt-2 text-lg">
-                  ${product.price.toFixed(2)}
-                </p>
-              </div>
-            ))}
-          </div>
+
+          {/* Display Error Message */}
+          {error && (
+            <p className="text-center text-red-500 mb-4">{error}</p>
+          )}
+
+          {/* Display Loading Indicator */}
+          {isLoading ? (
+            <p className="text-center text-lg">Loading products...</p>
+          ) : products.length === 0 ? (
+            <p className="text-center text-lg">No products available at the moment.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  className="bg-[var(--color-secondary)] text-center rounded-lg shadow-lg p-6 hover:shadow-2xl transition-transform transform hover:scale-105"
+                >
+                  <Image
+                    src={product.imageUrl || "/images/default-product.jpg"}
+                    alt={product.name}
+                    width={300}
+                    height={300}
+                    className="rounded-lg"
+                  />
+                  <h3 className="text-lg font-bold mt-4 text-[var(--color-primary)]">
+                    {product.name}
+                  </h3>
+                  <p className="text-[var(--color-accent)] mt-2 text-lg">
+                    ${product.price.toFixed(2)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </main>

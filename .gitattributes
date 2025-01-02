@@ -1,0 +1,12 @@
+# Set the default behavior to automatically normalize line endings.
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and converted to LF.
+*.js text
+*.ts text
+*.json text
+*.prisma text
+*.sql text
+
+# Declare files that will always have CRLF line endings on checkout.
+*.bat text eol=crlf

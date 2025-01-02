@@ -1,0 +1,15 @@
+/* app/components/TrackButton.module.css */
+
+.trackButton {
+    padding: 10px 20px;
+    background-color: #0070f3;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .trackButton:hover {
+    background-color: #005bb5;
+  }
